@@ -37,4 +37,29 @@ mongoose.connect(db.mongoURI, {
     })
   })
 
+  app.post('/login', (req, res) => {
+
+     User.findOne({ email: req.body.email }, (err, user) => {
+      // user는 스키마
+
+       if(!user){
+         return res.json({
+           loginSuccess: false,
+           message: "해당하는 유저가 없습니다."
+         })
+       }
+
+       user.comparePassword(req.body.password, (err, isMatch) => {
+          if(!isMatch)
+            return res.json({ loginSuccess: false, message: "비밀번호가 틀림" });
+
+          // 비밀번호까지 맞다면 토큰 생성
+          user.generateToken((err, user) => {
+            
+          })
+       })
+
+     })
+  })
+
 app.listen(port, () => console.log(`Example app listening on port ${port}`))
