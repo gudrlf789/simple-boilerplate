@@ -31,7 +31,6 @@ mongoose.connect(db.mongoURI, {
 
     user.save((err, userInfo) => {
       if(err) return res.json({ sucess: false, err })
-
       return res.status(200).json({
         sucess: true
       })
