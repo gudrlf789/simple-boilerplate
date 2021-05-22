@@ -5,9 +5,22 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import 'antd/dist/antd.css';
+import {applyMiddleware, createStore} from 'redux';
+import promiseMiddleware from 'redux-promise';
+import ReduxThunk from 'redux-thunk';
+import Reducer from './_reducers';
+
+// store에는 일반 객체만 올수있는데 Promise와 function 도 같이 받을수 있게 redux 미들웨어에 설정
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+
 
 ReactDOM.render(
-  <Provider>
+  <Provider
+    store={createStoreWithMiddleware(Reducer,
+        window.__REDUX_DEVTOOLS.EXTENSION__&&
+        window.__REDUX_DEVTOOLS.EXTENSION__()
+      )}
+  >
     <App />
   </Provider>,
   document.getElementById('root')
